@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-ARG user mysql
+ENV user mysql
 ENV group mysql
 ENV uid 1000
 ENV gid 1000
