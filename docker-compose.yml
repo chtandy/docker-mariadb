@@ -16,8 +16,11 @@ services:
     hostname: mariadb
     #tty: true
     restart: unless-stopped
-    #environment: 
-    #  - MYSQL_ROOT_PWD=password
+    environment: 
+      - MYSQL_ROOT_PWD=password
+      - MYSQL_USER=foobar
+      - MYSQL_USER_PWD=foobar
+      - MYSQL_USER_DB=foobar
     volumes:
       - ./data/db-data:/var/lib/mysql
       - ./data/db-config:/etc/mysql/conf.d
