@@ -22,7 +22,7 @@ else
 fi
 
 if [ -d /var/lib/mysql/mysql ]; then
-	echo '[i] MySQL directory already present, skipping creation'
+    echo '[i] MySQL directory already present, skipping creation'
     /usr/sbin/mysqld --user=mysql --console --skip-networking=0
 else
 	echo "[i] MySQL data directory not found, creating initial DBs"
@@ -51,9 +51,6 @@ FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
-#USE mysql;
-#FLUSH PRIVILEGES;
-#DELETE FROM mysql.user;
 EOF
 
 
@@ -64,14 +61,14 @@ EOF
 
 		# set new User and Password
 		if [ "$MYSQL_USER" != "" ] && [ "$MYSQL_USER_PWD" != "" ]; then
-		echo "[i] Creating user: $MYSQL_USER with password $MYSQL_USER_PWD"
-		echo "GRANT ALL ON \`$MYSQL_USER_DB\`.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_USER_PWD';" >> $tfile
+            echo "[i] Creating user: $MYSQL_USER with password $MYSQL_USER_PWD"
+            echo "GRANT ALL ON \`$MYSQL_USER_DB\`.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_USER_PWD';" >> $tfile
 		fi
 	else
 		# don`t need to create new database,Set new User to control all database.
 		if [ "$MYSQL_USER" != "" ] && [ "$MYSQL_USER_PWD" != "" ]; then
-		echo "[i] Creating user: $MYSQL_USER with password $MYSQL_USER_PWD"
-		echo "GRANT ALL ON *.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_USER_PWD';" >> $tfile
+            echo "[i] Creating user: $MYSQL_USER with password $MYSQL_USER_PWD"
+            echo "GRANT ALL ON *.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_USER_PWD';" >> $tfile
 		fi
 	fi
 
@@ -81,7 +78,7 @@ EOF
 	echo "[i] run tempfile: $tfile"
 	/usr/sbin/mysqld --user=mysql --bootstrap --verbose=0 --skip-networking=0 < $tfile
 
-	#rm -f $tfile
+    rm -f $tfile
     echo '[i] MySQL directory already present, skipping creation'
     /usr/sbin/mysqld --user=mysql --console --skip-networking=0
 fi
