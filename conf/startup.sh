@@ -14,9 +14,16 @@ if [ ! -d "/run/mysqld" ]; then
 	chown -R mysql:mysql /run/mysqld
 fi
 
+if [ -d /var/lib/mysql ]; then
+    echo '[i] MySQL main directory already present, skipping creation'
+else
+    echo "[i] MySQL Main directory not found, creating Main directory"
+    mkdir -p /var/lib/mysql
+fi
+
 if [ -d /var/lib/mysql/mysql ]; then
 	echo '[i] MySQL directory already present, skipping creation'
-    # /usr/sbin/mysqld --user=mysql --console --skip-networking=0
+    /usr/sbin/mysqld --user=mysql --console --skip-networking=0
 else
 	echo "[i] MySQL data directory not found, creating initial DBs"
         # initial database
@@ -40,11 +47,13 @@ else
 	# save sql
 	echo "[i] Create temp file: $tfile"
 	cat << EOF > $tfile
-USE mysql;
 FLUSH PRIVILEGES;
-DELETE FROM mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+#USE mysql;
+#FLUSH PRIVILEGES;
+#DELETE FROM mysql.user;
 EOF
 
 
@@ -70,14 +79,11 @@ EOF
 
 	# run sql in tempfile
 	echo "[i] run tempfile: $tfile"
-
-        # show $tfile content
-        echo $tfile
-
 	/usr/sbin/mysqld --user=mysql --bootstrap --verbose=0 --skip-networking=0 < $tfile
-	rm -f $tfile
-        echo '[i] MySQL directory already present, skipping creation'
-        # /usr/sbin/mysqld --user=mysql --console --skip-networking=0
+
+	#rm -f $tfile
+    echo '[i] MySQL directory already present, skipping creation'
+    /usr/sbin/mysqld --user=mysql --console --skip-networking=0
 fi
 
 echo "[i] Sleeping 5 sec"
