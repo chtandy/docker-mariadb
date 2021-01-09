@@ -1,0 +1,32 @@
+version: '3'
+services:
+  init:
+    image: busybox
+    command: "chown 1000:1000 /data"
+    volumes:
+      - ./data/db-data:/data
+    restart: 'no'
+
+  mariadb:
+    image: mariadb
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: mariadb
+    hostname: mariadb
+    #tty: true
+    restart: unless-stopped
+    #environment: 
+    #  - MYSQL_ROOT_PWD=password
+    volumes:
+      - ./data/db-data:/var/lib/mysql
+      - ./data/db-config:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+    depends_on:
+    - init
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
