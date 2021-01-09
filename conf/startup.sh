@@ -19,8 +19,8 @@ if [ -d /var/lib/mysql/mysql ]; then
     # /usr/sbin/mysqld --user=mysql --console --skip-networking=0
 else
 	echo "[i] MySQL data directory not found, creating initial DBs"
-    # initial database
-    cp -rp /opt/mysql/* /var/lib/mysql/
+        # initial database
+        cp -rp /opt/mysql/* /var/lib/mysql/
   
 	chown -R mysql:mysql /var/lib/mysql
 
@@ -70,10 +70,14 @@ EOF
 
 	# run sql in tempfile
 	echo "[i] run tempfile: $tfile"
+
+        # show $tfile content
+        echo $tfile
+
 	/usr/sbin/mysqld --user=mysql --bootstrap --verbose=0 --skip-networking=0 < $tfile
 	rm -f $tfile
-    echo '[i] MySQL directory already present, skipping creation'
-    # /usr/sbin/mysqld --user=mysql --console --skip-networking=0
+        echo '[i] MySQL directory already present, skipping creation'
+        # /usr/sbin/mysqld --user=mysql --console --skip-networking=0
 fi
 
 echo "[i] Sleeping 5 sec"

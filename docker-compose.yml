@@ -1,11 +1,11 @@
 version: '3'
 services:
-  init:
-    image: busybox
-    command: "chown 1000:1000 /data"
-    volumes:
-      - ./data/db-data:/data
-    restart: 'no'
+  #init:
+  #  image: busybox
+  #  command: "chown 1000:1000 /data"
+  #  volumes:
+  #    - ./data/db-data:/data
+  #  restart: 'no'
 
   mariadb:
     image: mariadb
