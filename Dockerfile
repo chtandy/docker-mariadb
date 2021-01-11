@@ -1,4 +1,5 @@
 FROM ubuntu:16.04
+MAINTAINER cht.andy@gmail.com 
 ENV user mysql
 ENV group mysql
 ENV uid 1000
